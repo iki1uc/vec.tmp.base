@@ -1,0 +1,26 @@
+{
+  "user": {
+    "id": "RIDVAN",
+    "rolle": "pilot",
+    "level": 6,
+    "status": "active",
+
+    "carrier": "NOAH",
+    "ready": "WELCOME",
+    "mode": "WETTER",
+
+    "station": "START",
+    "respo": "NONE",
+    "pulse": 0.0,
+
+    "route": {
+      "from": "master.boot.block",
+      "to": [
+        "evotaal",
+        "evocity",
+        "iki1uc.cockpit"
+      ]
+    }
+  }
+}
+
