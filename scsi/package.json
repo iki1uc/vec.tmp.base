@@ -1,0 +1,18 @@
+{
+  "name": "3-eck-discord-role-service",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Serverseitiger Service für zeitlich begrenzte Discord-Rollen in 3.eck.",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "discord.js": "^14.21.0",
+    "dotenv": "^16.6.1",
+    "express": "^4.21.2",
+    "express-session": "^1.18.1"
+  }
+}
