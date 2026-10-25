@@ -1,0 +1,25 @@
+// vector.tmp.js — fn.vector.tmp — 3.9.81)(27.243.728 bios bio
+// Σ3TEL 2268 = 3⁷+3⁴ — 4TEL 567 = 81×7 — 756/729 = 28/27 — TAKT 729 @101ms
+export class VectorTmp {
+  constructor(id='vec.tmp.base', v3=3, v9=9){
+    this.id = id;
+    this.v3 = v3;
+    this.v9 = v9;
+    this.terrain = 27*27; // 729
+    this.sectors = 729;
+    this.baseUrl = 'https://iki1uc.github.io/vec.tmp.base/';
+    this.aTEM = 6; // 6 ATEM 16s SFX ゴゴゴ
+  }
+  // KNOTEN.FASSER Methoden
+  push(){ return `PUSH ${this.v3}→${this.v3*9}` } // 3→27
+  pull(){ return `PULL ${this.v9}→${this.v9*9}` } // 9→81
+  shift(){ return `SHIFT ${this.v3}↔${this.v9}` }
+  flow(){ return `FLOW ${this.sectors} sektoren` }
+  rise(){ return `RISE 27→243→729` } // 3³→3⁵→3⁶
+  drop(){ return `DROP 729→27→3` }
+  static get base(){ return 'https://iki1uc.github.io/vec.tmp.base/' }
+}
+// feld.html = 1 aus 1-9 needs fn.place.raum + vector
+// eye=rauch auge=licht indy=sensorik = 27er Karussell
+export const vec3 = new VectorTmp('vec.3', 3, 9);
+export const vec9 = new VectorTmp('vec.9', 9, 81);
