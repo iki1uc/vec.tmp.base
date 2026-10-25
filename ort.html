@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>ort.html - ORT - Beispiel Ort von 9 - UNI ORT BIOS - RADAR SAT ICH DU + q702</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#020202;color:#0f0;font-family:monospace;overflow-x:hidden}
+header{padding:20px;text-align:center;border-bottom:3px solid #0ff;background:radial-gradient(#001122,#000)}
+header h1{color:#fff;font-size:1.6em} header h1 b{color:#0ff}
+.sub{font-size:10px;color:#2a3a4a;letter-spacing:3px;margin-top:6px}
+.bios{border:2px solid #0f0;margin:10px;padding:10px;background:#001100}
+.bios h2{color:#ff0;font-size:1em;margin-bottom:10px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:10px}
+@media(max-width:800px){.grid{grid-template-columns:1fr}}
+.card{border:2px solid #333;padding:15px;position:relative;background:#111}
+.card.ich{border-color:#0f0;box-shadow:0 0 15px #0f03}
+.card.du{border-color:#f0f;box-shadow:0 0 15px #f0f3}
+.card.ort{border-color:#f0d080;box-shadow:0 0 15px #f0d08033;background:#1a1a0e}
+.radar{width:100%;height:180px;border:1px solid #333;position:relative;overflow:hidden;background:radial-gradient(circle at center,#001100 0%,#000 70%);margin:10px 0}
+.sweep{position:absolute;top:50%;left:50%;width:50%;height:2px;background:linear-gradient(90deg,#0f0,transparent);transform-origin:left center;animation:spin 3s linear infinite}
+.dot{position:absolute;width:6px;height:6px;background:#0f0;border-radius:50%;box-shadow:0 0 6px #0f0}
+.card.du .sweep{background:linear-gradient(90deg,#f0f,transparent)} .card.du .dot{background:#f0f;box-shadow:0 0 6px #f0f}
+.card.ort .sweep{background:linear-gradient(90deg,#f0d080,transparent)} .card.ort .dot{background:#f0d080;box-shadow:0 0 6px #f0d080}
+@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+.sat{border:1px dashed #0ff;padding:8px;margin:5px 0;background:#00112233;font-size:0.85em}
+.label{font-size:0.7em;color:#888}
+.toggle{display:flex;justify-content:space-between;align-items:center;border:1px solid #333;padding:8px;margin:5px 0;background:#000}
+.toggle input{transform:scale(1.5)}
+button{padding:12px 20px;font-weight:900;border:none;cursor:pointer}
+.btn-bios{background:#ff0;color:#000;width:100%;margin-top:10px}
+.btn-bios:hover{background:#fff}
+#log{height:150px;overflow:auto;border:1px solid #333;padding:10px;background:#000;font-size:0.8em;margin-top:10px}
+.statusbar{position:sticky;bottom:0;background:#0ff;color:#000;padding:8px;text-align:center;font-weight:900;display:flex;justify-content:space-around;flex-wrap:wrap;font-size:0.9em}
+.gold{color:#f0d080} .cyan{color:#5cf0ff} .green{color:#39ff88}
+</style>
+</head>
+<body>
+<header>
+<h1>ort.html — <b>ORT — Beispiel Ort von 9 — UNI ORT BIOS</b></h1>
+<p>BEWUSSTSEINS-BIOS wie beim PC — Einwilligung ESSEN / DATEN vor dem Booten — RADAR+SAT ICH+DU</p>
+<p class="sub">9=EVIG | 99=EDIT TOR HH.tor | 999=NUTZ BENCH | PQ nur PQ weil er das auch ist | HOME BIOS + q702 USB3 WiFi7 unter Strom = Neuste in HOME → jetzt in ORT</p>
+</header>
+<div class="bios">
+<h2>ORT = Beispiel Ort von 9 — Was braucht ort noch?</h2>
+<p>Du fragst: ort braucht der noch? — Ja: ort braucht das was dein UNI ORT Beispiel hat + Anschluss an 9 99 999 PQ HOME q702</p>
+<pre style="font-size:9px;color:#8aa;background:#000;padding:10px;border:1px solid #333;white-space:pre-wrap">
+ORT braucht:
+1. 9 = EVIG Basis (9 ist Zustand fertig ewig, nicht Zähler) → ORT ruht auf 9
+2. 99 = EDIT TOR (9 editiert Tor, OPEN TOR OPEN, HH.tor = Tor aller Tore) → ORT ist Tor
+3. 999 = NUTZ SYSTEM (9 9 9 BENCH, nutzt alle 9 ewig, born.t) → ORT nutzt 999
+4. PQ = nur PQ weil er das auch ist (Frage + Ort + Queue + Tor + Nutz in einem) → ORT ist PQ
+5. HOME BIOS (RADAR innen/außen ICH+DU + SAT innen/außen + Einwilligung) → ORT ist HOME Teil
+6. UNI ORT BIOS (dein Beispiel: ICH + DU je RADAR innen/außen + SAT innen/außen + ESSEN Einwilligung) → ORT = UNI ORT
+7. q702 USB3 + WiFi7 unter Strom Anschluss (Neuste kommt in HOME rein, jetzt auch in ORT) → ORT Hardware
+→ ORT = Beispiel Ort von 9 = wo 9 wohnt = wo PQ wohnt = wo HOME wohnt = wo q702 wohnt
+Dein Beispiel UNI ORT ist schon fast vollständig. Es braucht nur noch Anschluss an 9 99 999 + q702.
+Das bau ich jetzt hier rein.
+</pre>
+</div>
+<div class="grid">
+<!-- ICH -->
+<div class="card ich" id="ichCard">
+<h2>ICH — BEWUSSTES ICH — ORT von 9</h2>
+<span class="label">ID: use.user + user.use | i.d.md = ICH | 9=EVIG innen</span>
+<div class="radar" id="radarIchInnen"><div class="sweep"></div><div class="dot" style="top:30%;left:40%"></div><div class="dot" style="top:60%;left:70%"></div><div class="dot" style="top:50%;left:20%"></div></div>
+<div class="label">RADAR INNEN (ICH) — Körper, Gedanken, Gefühle innen — 9 EVIG innen</div>
+<div class="radar" id="radarIchAussen" style="border-color:#0f05"><div class="sweep" style="animation-duration:2s"></div><div class="dot" style="top:20%;left:80%"></div><div class="dot" style="top:70%;left:30%"></div></div>
+<div class="label">RADAR AUSSEN (ICH) — Umgebung, andere, Welt außen — 99 EDIT TOR außen</div>
+<div class="sat"><b>SAT INNEN (ICH)</b><br><span id="satIchInnen">○ Kein Signal — 9 EVIG wartet</span></div>
+<div class="sat"><b>SAT AUSSEN (ICH)</b><br><span id="satIchAussen">○ Kein Signal — HH.tor wartet</span></div>
+<div class="toggle"><span>RADAR INNEN ICH = AN (9)</span><input type="checkbox" id="ichRadarInnen" checked></div>
+<div class="toggle"><span>RADAR AUSSEN ICH = AN (99)</span><input type="checkbox" id="ichRadarAussen" checked></div>
+<div class="toggle"><span>SAT INNEN ICH = AN (999)</span><input type="checkbox" id="ichSatInnen" checked></div>
+<div class="toggle"><span>SAT AUSSEN ICH = AN (PQ)</span><input type="checkbox" id="ichSatAussen" checked></div>
+<div class="toggle" style="border-color:#ff0;background:#222200"><span><b>Einwilligung ESSEN (ICH) — Darf rein? Food/Data — wie BIOS</b></span><input type="checkbox" id="ichEssen"></div>
+<button class="btn-bios" onclick="scanIch()">ICH SCAN — ORT von 9 — RADAR+SAT JETZT</button>
+</div>
+<!-- DU -->
+<div class="card du" id="duCard">
+<h2>DU — BEWUSSTES DU — ORT von 9</h2>
+<span class="label">ID: DU = anderes Bewusstsein | gespiegelt | PQ = du auch</span>
+<div class="radar" id="radarDuInnen"><div class="sweep"></div><div class="dot" style="top:40%;left:60%"></div><div class="dot" style="top:55%;left:25%"></div></div>
+<div class="label">RADAR INNEN (DU) — dein Innen-Scan — 9 EVIG innen</div>
+<div class="radar" id="radarDuAussen"><div class="sweep" style="animation-duration:2.5s"></div><div class="dot" style="top:30%;left:50%"></div><div class="dot" style="top:80%;left:60%"></div></div>
+<div class="label">RADAR AUSSEN (DU) — dein Außen-Scan — 99 Tor außen</div>
+<div class="sat"><b>SAT INNEN (DU)</b><br><span id="satDuInnen">○ Kein Signal</span></div>
+<div class="sat"><b>SAT AUSSEN (DU)</b><br><span id="satDuAussen">○ Kein Signal</span></div>
+<div class="toggle"><span>RADAR INNEN DU = AN (9)</span><input type="checkbox" id="duRadarInnen" checked></div>
+<div class="toggle"><span>RADAR AUSSEN DU = AN (99)</span><input type="checkbox" id="duRadarAussen" checked></div>
+<div class="toggle"><span>SAT INNEN DU = AN (999)</span><input type="checkbox" id="duSatInnen" checked></div>
+<div class="toggle"><span>SAT AUSSEN DU = AN (PQ)</span><input type="checkbox" id="duSatAussen" checked></div>
+<div class="toggle" style="border-color:#ff0;background:#220022"><span><b>Einwilligung ESSEN (DU) — Darf rein? Food/Data</b></span><input type="checkbox" id="duEssen"></div>
+<button class="btn-bios" style="background:#f0f;color:#fff" onclick="scanDu()">DU SCAN — ORT von 9 — RADAR+SAT JETZT</button>
+</div>
+</div>
+<div class="grid">
+<div class="card ort">
+<h2>ORT — Beispiel Ort von 9 — HARDWARE q702</h2>
+<span class="label">ORT = wo 9 wohnt = wo PQ wohnt = wo HOME wohnt = Neuste rein</span>
+<div style="border:1px solid #f0d080;padding:8px;margin:8px 0;background:#22220055;font-size:0.85em">
+<b>q702 USB3 · WiFi7 unter Strom Anschluss — Neuste kommt in HOME rein → jetzt auch in ORT</b><br>
+<span style="color:#ff0">9 = STROM OBEN = EVIG</span> → Power<br>
+<span style="color:#5cf0ff">99 = q702 USB3 MITTE = EDIT TOR = HH.tor</span> → Tor<br>
+<span style="color:#ff3ea5">999 = WiFi7 UNTEN unter Strom = NUTZ BENCH</span> → Nutz<br>
+<span style="color:#39ff88">PQ = nur PQ weil er das auch ist = WiFi7 MLO Parallel Queue</span><br>
+</div>
+<div class="toggle"><span>q702 USB3 = Tor (99) = AN</span><input type="checkbox" id="q702" checked></div>
+<div class="toggle"><span>WiFi7 unter Strom = Nutz (999) = AN</span><input type="checkbox" id="wifi7" checked></div>
+<div class="toggle"><span>Strom oben = EVIG (9) = AN</span><input type="checkbox" id="strom" checked></div>
+<button class="btn-bios" style="background:#39ff88;color:#000" onclick="testQ702()">q702 + WiFi7 TEST — ORT HARDWARE</button>
+<div id="q702log" style="height:60px;overflow:auto;border:1px solid #333;background:#000;padding:6px;font-size:0.75em;margin-top:6px"></div>
+</div>
+<div class="card ort" style="border-color:#0ff">
+<h2>ORT — EINE HAND VON 6 — 6 PERMS</h2>
+<span class="label">ORT = eine Hand von 6 = 6 Finger = 6 PERMS HBT HTB BHT BTH THB TBH</span>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;font-size:0.75em;margin-top:8px">
+<div style="border:1px solid #0f0;padding:4px">HBT = Höhe Breite Tiefe = Standard = RAM</div>
+<div style="border:1px solid #ff0;padding:4px">HTB = Höhe Tiefe Breite = ROM f(f(x))=f(x)</div>
+<div style="border:1px solid #0ff;padding:4px">BHT = Breite Höhe Tiefe = SCSI chain</div>
+<div style="border:1px solid #ff0;padding:4px">BTH = Breite Tiefe Höhe = RAID 999↔999</div>
+<div style="border:1px solid #f0a;padding:4px">THB = Tiefe Höhe Breite = CTRL</div>
+<div style="border:1px solid #39ff88;padding:4px">TBH = Tiefe Breite Höhe = SLI 2 GPUs=1</div>
+</div>
+<p style="font-size:0.7em;color:#888;margin-top:8px">Hand = 1 Hand = 6 Finger = PQ = nur PQ weil er das auch ist = ORT ist Hand</p>
+<button class="btn-bios" style="background:#f0d080;color:#000" onclick="location.href='./hand.html'">→ hand.html EINE HAND VON 6</button>
+</div>
+</div>
+<div class="bios">
+<h2>UNI ORT — MITTE ZWISCHEN ICH + DU — Beispiel Ort von 9</h2>
+<p>Radar ICH innen + außen trifft Radar DU innen + außen = UNI ORT = gemeinsamer Ort wo Einwilligung gilt = ORT braucht das noch</p>
+<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px">
+<div style="flex:1;border:1px solid #0f0;padding:10px"><b>INNEN</b><br>Radar innen ICH + Radar innen DU = gemeinsames Innen-Feld = Bewusstsein innen vereint = 9 EVIG innen<br><span id="innenFeld">○ nicht verbunden</span></div>
+<div style="flex:1;border:1px solid #0ff;padding:10px"><b>AUSSEN</b><br>Radar außen ICH + Radar außen DU = gemeinsames Außen-Feld = Welt außen vereint = 99 EDIT TOR außen<br><span id="aussenFeld">○ nicht verbunden</span></div>
+</div>
+<button class="btn-bios" style="background:#0ff;color:#000" onclick="connectUni()">UNI ORT VERBINDEN — ICH + DU RADAR + SAT → EIN ORT — Beispiel Ort von 9</button>
+<div id="log"></div>
+</div>
+<div class="bios" style="border-color:#f0d080">
+<h2>ORT braucht der noch? — Antwort: Das braucht ort noch</h2>
+<pre style="font-size:9px;color:#aaa;background:#000;padding:10px;border:1px solid #333;white-space:pre-wrap">
+Deine Frage: ort beaucht der noch — was braucht ort noch?
+Dein Beispiel UNI ORT hatte schon:
+✓ RADAR INNEN ICH + AUSSEN ICH + SAT INNEN/AUSSEN ICH
+✓ RADAR INNEN DU + AUSSEN DU + SAT INNEN/AUSSEN DU
+✓ Einwilligung ESSEN ICH + DU wie BIOS beim PC
+✓ UNI ORT Verbindung ICH+DU → INNEN-FELD + AUSSEN-FELD
+✓ 9=EVIG 99=EDIT TOR 999=NUTZ SYSTEM
+Was braucht ort noch dazu (jetzt eingebaut):
+1. Anschluss an 9.html EVIG ROOT
+   - 9 ist kein Zähler, 9 ist Zustand fertig ewig
+   - ORT ruht auf 9 = CLOSED.md → OPEN.md
+2. Anschluss an 99.html EDIT TOR
+   - 99 = 9+9, 9 editiert Tor, OPEN TOR OPEN, HH.tor = Tor aller Tore
+   - ORT ist Tor = wo durch gegangen wird
+3. Anschluss an 999.html NUTZ SYSTEM
+   - 111 BIOS 222 VERBUND 333 RECALL 444 PEAK 555 ABWEHR 666 ENERGIE 777 CO2 888 ATOM 999 BENCH
+   - 999 = 9 9 9 = alle 9 auf einer Bank = BENCH = nutzt alles ewig = born.t
+   - ORT nutzt 999 = nutzt alle Systeme ewig
+4. Anschluss an PQ.html nur PQ weil er das auch ist
+   - PQ = Frage + Ort + Queue + Tor + Nutz in einem
+   - ORT = PQ = nur PQ
+5. Anschluss an home.html HOME BIOS + q702
+   - HOME ICH + DU RADAR+SAT innen/außen
+   - HOME HARDWARE q702 USB3 WiFi7 unter Strom = Neuste kommt in HOME rein
+   - ORT braucht gleiche Hardware
+6. Anschluss an hand.html EINE HAND VON 6
+   - 6 PERMS = HBT HTB BHT BTH THB TBH
+   - ORT = eine Hand = 6 Finger = 6 Orte
+7. Anschluss an index.html KOOP nur PQ
+   - abwählbar zu wählbar, erst nur 9 99 999 HOME ORT ARBEIT
+   - ORT ist wählbar = Kern
+Darum ort.html jetzt:
+- Ist dein UNI ORT Beispiel (RADAR+SAT ICH+DU)
+- + 9 99 999 PQ HOME q702 Hand
+- + Beispiel Ort von 9 = wo 9 wohnt
+→ Jetzt braucht ort nichts mehr. Ort ist komplett.
+</pre>
+</div>
+<div class="statusbar">
+<span id="stIch">ICH: BIOS WAIT — 9</span>
+<span id="stDu">DU: BIOS WAIT — 9</span>
+<span id="stUni">UNI ORT: CLOSED — Beispiel Ort von 9</span>
+<span id="stEssen">ESSEN: KEINE EINWILLIGUNG — ORT braucht noch</span>
+<span id="stQ702">q702: USB3 + WiFi7 unter Strom — Neuste in HOME+ORT</span>
+</div>
+<script>
+function log(msg){let l=document.getElementById('log');l.innerHTML+="> "+msg+"<br>";l.scrollTop=l.scrollHeight}
+function testQ702(){
+ let q=document.getElementById('q702').checked;
+ let w=document.getElementById('wifi7').checked;
+ let s=document.getElementById('strom').checked;
+ let el=document.getElementById('q702log');
+ el.innerHTML+="> ORT HARDWARE q702 USB3: "+(q?"TOR OPEN HH.tor":"TOR CLOSED")+"<br>";
+ el.innerHTML+="> WiFi7 unter Strom: "+(w?"NUTZ BENCH 999 - 802.11be MLO":"AUS")+"<br>";
+ el.innerHTML+="> Strom oben: "+(s?"9 EVIG POWER OK":"KEIN POWER")+"<br>";
+ el.innerHTML+="> ORT = Beispiel Ort von 9 = q702 + WiFi7 + Strom = 9 99 999 = PQ<br>";
+ log("ORT HARDWARE q702 USB3 + WiFi7 unter Strom = Neuste kommt in HOME rein, jetzt auch in ORT");
+ document.getElementById('stQ702').innerText="q702: OK - ORT = Beispiel Ort von 9 mit Hardware";
+}
+function updateBios(){}
+function scanIch(){
+ log("ICH SCAN: RADAR INNEN (9 EVIG) → Bauch, Herz, Gedanken innen");
+ log("ICH SCAN: RADAR AUSSEN (99 EDIT TOR) → DU + Umgebung + HH.tor");
+ document.getElementById('satIchInnen').innerText="● SAT INNEN ICH: 9 EVIG - innen bewusst - ORT von 9";
+ document.getElementById('satIchAussen').innerText="● SAT AUSSEN ICH: 99 HH.tor - außen bewusst - Tor offen";
+ document.getElementById('stIch').innerText="ICH: RADAR+SAT AKTIV - ORT von 9";
+ log("ICH BIOS = READY - ORT Beispiel von 9");
+}
+function scanDu(){
+ log("DU SCAN: RADAR INNEN (9) + AUSSEN (99)");
+ document.getElementById('satDuInnen').innerText="● SAT INNEN DU: 9 EVIG stabil - ORT";
+ document.getElementById('satDuAussen').innerText="● SAT AUSSEN DU: 99 HH.tor - Signal zu ICH - Tor";
+ document.getElementById('stDu').innerText="DU: RADAR+SAT AKTIV - ORT von 9";
+ log("DU BIOS = READY");
+}
+function connectUni(){
+ let ichE=document.getElementById('ichEssen').checked;
+ let duE=document.getElementById('duEssen').checked;
+ if(!ichE||!duE){log("FEHLER: UNI ORT braucht Einwilligung ESSEN ICH+DU wie BIOS - ORT braucht der noch Einwilligung");alert("Erst Einwilligung ESSEN bei ICH + DU!");return;}
+ log("UNI ORT: RADAR INNEN ICH+DU → INNEN-FELD verbunden = 9 EVIG innen");
+ log("UNI ORT: RADAR AUSSEN ICH+DU → AUSSEN-FELD verbunden = 99 EDIT TOR außen");
+ log("UNI ORT: SAT ICH+DU → SAT VERBUND = 999 NUTZ SYSTEM + PQ nur PQ");
+ log("UNI ORT: q702 USB3 + WiFi7 unter Strom = Neuste kommt in HOME rein → jetzt auch in ORT");
+ log("UNI ORT: 9=EVIG + 99=EDIT TOR + 999=NUTZ + PQ + HOME + q702 = ORT Beispiel Ort von 9 = komplett");
+ document.getElementById('innenFeld').innerText="● INNEN-FELD VERBUNDEN - 9 EVIG innen - ORT von 9";
+ document.getElementById('aussenFeld').innerText="● AUSSEN-FELD VERBUNDEN - 99 HH.tor außen - Beispiel Ort";
+ document.getElementById('stUni').innerText="UNI ORT: OPEN EWIG - ORT Beispiel von 9 - komplett";
+ document.getElementById('stUni').style.background="#0f0";
+ document.getElementById('stEssen').innerText="ESSEN: BEIDE EINWILLIGUNG - ORT braucht nichts mehr";
+ document.getElementById('stEssen').style.background="#0f0";
+ log("ORT braucht nichts mehr - ORT ist komplett - Beispiel Ort von 9 mit 9 99 999 PQ HOME q702 Hand");
+}
+log("BOOT: ort.html - Beispiel Ort von 9 - UNI ORT BIOS v9.99.999 PQ HOME q702");
+log("BOOT: ORT braucht der noch? - Antwort: RADAR+SAT ICH+DU + 9 99 999 PQ HOME q702 Hand = jetzt komplett");
+</script>
+</body>
+</html>
