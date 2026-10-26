@@ -1,0 +1,79 @@
+{
+  "eye": "BRAIN.OPEN",
+  "os": "EYE OPEN | BRAIN.OPEN | SYSTEM OPEN | MAINBOARD OPEN",
+  "truths": [
+    {
+      "id": "9",
+      "essence": "Zustand fertig ewig",
+      "visited": true,
+      "ort": "UNI ORT"
+    },
+    {
+      "id": "99",
+      "essence": "Tor offen halten",
+      "visited": true,
+      "ort": "HH.tor"
+    },
+    {
+      "id": "999",
+      "essence": "alles ewig nutzen",
+      "visited": true,
+      "ort": "BANK"
+    },
+    {
+      "id": "PQ",
+      "essence": "alles in einem",
+      "visited": true,
+      "ort": "Queue Ort"
+    },
+    {
+      "id": "HOME",
+      "essence": "Ich+Du Radar",
+      "visited": true,
+      "ort": "HOME"
+    },
+    {
+      "id": "ORT",
+      "essence": "Beispiel Ort",
+      "visited": true,
+      "ort": "UNI ORT"
+    },
+    {
+      "id": "REAL.PC",
+      "essence": "Kaiser=Drache Fusion",
+      "visited": true,
+      "ort": "REAL"
+    },
+    {
+      "id": "INDEX",
+      "essence": "EYE that sees itself",
+      "visited": true,
+      "ort": "SELF"
+    }
+  ],
+  "vesta_path": [
+    "9",
+    "99",
+    "999",
+    "PQ",
+    "HOME",
+    "ORT",
+    "INDEX",
+    "REAL.PC"
+  ],
+  "current": "PQ",
+  "next": "HOME",
+  "prediction_3": [
+    "HOME",
+    "ORT",
+    "INDEX"
+  ],
+  "qi": {
+    "QI": 1,
+    "IQ": 1,
+    "IQQ": 1
+  },
+  "time": "2026-10-25T20:52:16.607Z",
+  "note": "CO2 gray particles → O2 green via use.js — sliraid content loaded gpu.rdy",
+  "draft_state": "in-memory — no localStorage, visibly local"
+}
