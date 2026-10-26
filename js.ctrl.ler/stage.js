@@ -1,6 +1,4 @@
-// Nur noch 2 Files checken statt 5
-const files = ['sli/ready.on', 'js.ctrl.ler/raid.scsi.sli.ready'];
-Promise.all(files.map(f=>fetch(f).then(r=>r.text()))).then(([a,b])=>{
-  const ok = a.includes('ready') && b.includes('raid=ready') && b.includes('scsi=ready') && b.includes('sli=ready');
-  if(ok) log('🛗 Alle 3 Drives ready · Corridor offen · 729 Sektoren');
-});
+import { runPipelineOnce, paket_prime, paket_pi, paket_e } from './tam/pipeline.js';
+const result = runPipelineOnce({prime: paket_prime, pi: paket_pi, e: paket_e}, zoom=2);
+C_V_PIPELINE.state.input = result.satt.primzahl;
+C_V_PIPELINE.state.lane_values = result.ei;
