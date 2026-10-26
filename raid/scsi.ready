@@ -1,1 +1,5 @@
-
+raid/sli.ready → wie oben
+scsi/raid.ready → scsi meldet raid ready (Magnetismus → Gravitation)
+raid/scsi.ready → raid meldet scsi ready (Gravitation → Magnetismus)
+sli/ready.on → das einzige echte Ready File (13 Etagen)
+js.ctrl.ler/raid.scsi.sli.ready → Master mit allen 3 (Tesla Edison Gravitation Magnetismus)
