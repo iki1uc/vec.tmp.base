@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<!-- saved from url=(0065)https://iki1uc.github.io/NET.y.NET.sizer-Core-Log-Dashboard.html/ -->
+<html lang="de" style="--c: #39ff88;"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EIN OS · v3 · BIO.TEL PRISMATIC</title>
+<style>
+:root{
+  --bg:#02060a; --surface:#0a1220; --border:#1c2f4a;
+  --gold:#ffd700; --cyan:#00ccff; --green:#39ff88; --red:#ff5a5f;
+  --orange:#ff7a18; --violet:#a855f7; --white:#fff; --smaragd:#00ffaa;
+  --text:#e8ebf5; --dim:#6b7f99; --dim2:#8899aa;
+  --c:#00ccff;
+}
+*{box-sizing:border-box;font-family:"JetBrains Mono",ui-monospace,monospace}
+html,body{margin:0;background:var(--bg);color:var(--text);min-height:100vh}
+button{cursor:pointer;font-family:inherit}
+::-webkit-scrollbar{width:5px;height:5px}::-webkit-scrollbar-thumb{background:var(--border)}
+
+/* HEADER */
+#header{position:sticky;top:0;z-index:1000;display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:6px 10px;background:rgba(2,6,10,.98);border-bottom:1px solid var(--c);min-height:52px}
+.logo{font-size:10px;font-weight:900;letter-spacing:.15em;color:var(--c);padding:4px 8px;border:1px solid var(--c);border-radius:4px}
+.title{font-size:11px;font-weight:700;letter-spacing:.1em}
+.title small{font-size:8px;color:var(--dim);margin-left:6px;font-weight:400}
+.vital{display:flex;align-items:center;gap:4px;font-size:10px;padding:3px 7px;border:1px solid var(--border);border-radius:4px;background:rgba(0,0,0,.4)}
+.vital b{font-weight:700}
+.vital .dot{width:6px;height:6px;border-radius:50%;background:currentColor}
+.atem-bar{width:60px;height:4px;background:#000;border-radius:2px;overflow:hidden}
+.atem-fill{height:100%;background:var(--c);transition:width 1s linear}
+.hb-btn{padding:4px 8px;font-size:9px;font-weight:700;letter-spacing:.08em;border:1px solid var(--border);border-radius:4px;background:transparent;color:var(--text)}
+.hb-btn.on{background:var(--gold);border-color:var(--gold);color:#000}
+
+/* 5 WEG */
+#weg{display:flex;gap:3px;padding:6px 10px;background:rgba(2,6,10,.92);border-bottom:1px solid var(--border);overflow-x:auto}
+.weg-btn{flex:1;min-width:100px;padding:5px 8px;font-size:9px;font-weight:700;letter-spacing:.06em;border:1px solid var(--border);border-radius:4px;background:rgba(0,0,0,.4);color:var(--dim2);display:flex;flex-direction:column;gap:2px;align-items:flex-start;text-align:left}
+.weg-btn.active{border-color:var(--wc);background:rgba(255,255,255,.03);color:var(--wc);box-shadow:0 0 8px var(--wc)}
+.weg-btn small{font-size:7px;opacity:.7;font-weight:400}
+.weg-btn:hover{border-color:var(--dim2);color:var(--text)}
+
+/* 8 AXIOME */
+#axioms{display:flex;gap:2px;padding:4px 10px;background:rgba(2,6,10,.88);border-bottom:1px solid var(--border);overflow-x:auto}
+.axiom-btn{flex:1;min-width:60px;padding:4px 6px;font-size:8px;font-weight:700;letter-spacing:.05em;border:1px solid var(--ax);border-radius:3px;background:rgba(0,0,0,.5);color:var(--ax);transition:all .15s}
+.axiom-btn.sealed{background:var(--ax);color:#000;box-shadow:0 0 10px var(--ax)}
+.axiom-btn small{display:block;font-size:6px;opacity:.6;font-weight:400;margin-top:1px}
+
+/* DESK */
+#desk{position:relative;min-height:calc(100vh - 240px);overflow:hidden;background:radial-gradient(600px 400px at 50% 50%,rgba(0,204,255,.06),transparent),var(--bg);padding:8px}
+#bio-pulse{position:absolute;left:0;right:0;top:0;height:60px;pointer-events:none;opacity:.4}
+#pulse-canvas{width:100%;height:100%;display:block}
+
+/* WINDOWS */
+.win{position:absolute;background:rgba(8,14,22,.96);border:1px solid var(--c);border-radius:8px;display:flex;flex-direction:column;box-shadow:0 0 20px rgba(0,204,255,.15);max-height:calc(100% - 8px);min-width:200px}
+.win-head{height:26px;display:flex;align-items:center;justify-content:space-between;padding:0 8px;font-size:10px;font-weight:700;background:linear-gradient(90deg,rgba(0,204,255,.15),transparent);border-bottom:1px solid var(--border);cursor:move;user-select:none;flex-shrink:0}
+.win-head .actions{display:flex;gap:3px}
+.win-head button{width:18px;height:18px;border:1px solid rgba(255,255,255,.15);border-radius:50%;background:rgba(255,255,255,.05);color:var(--text);font-size:11px;display:grid;place-items:center;padding:0}
+.win-head button:hover{background:rgba(255,90,95,.5);border-color:var(--red)}
+.win-body{flex:1;overflow:auto;padding:8px;min-height:0;font-size:10px;line-height:1.4}
+
+/* DOCK */
+#dock{display:flex;flex-wrap:wrap;gap:4px;align-items:center;padding:6px 10px;background:rgba(2,6,10,.94);border-top:1px solid var(--c)}
+.dock-btn{height:32px;padding:0 10px;font-size:9px;font-weight:700;letter-spacing:.06em;border:1px solid var(--border);border-radius:5px;background:rgba(0,0,0,.5);color:var(--dim2);white-space:nowrap}
+.dock-btn.open{background:var(--c);color:#000;border-color:var(--c);box-shadow:0 0 8px var(--c)}
+.dock-btn:hover{border-color:var(--dim2);color:var(--text)}
+.dock-spacer{flex:1;min-width:10px}
+.dock-info{font-size:8px;opacity:.5;letter-spacing:.08em}
+
+/* LOG */
+#tel-log{max-height:0;overflow:hidden;background:rgba(2,6,10,.96);border-top:1px solid var(--border);transition:max-height .2s}
+#tel-log.open{max-height:140px}
+.tel-inner{padding:6px 10px;font-size:9px;line-height:1.5;overflow-y:auto;max-height:140px}
+.tel-line{display:flex;gap:8px;padding:1px 0;border-bottom:1px dotted rgba(28,47,74,.3)}
+.tel-line .ts{color:var(--dim);min-width:50px;font-size:8px}
+.tel-line .from{color:var(--cyan);min-width:60px;font-weight:700;font-size:8px}
+.tel-line .msg{flex:1;color:var(--dim2)}
+
+/* ORGAN BODIES */
+.axes{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;margin:4px 0}
+.axis{aspect-ratio:1;border:1px solid var(--border);border-radius:4px;background:rgba(0,0,0,.5);color:var(--dim2);font-size:8px;font-weight:700;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;padding:2px}
+.axis.active{border-color:var(--gold);background:rgba(255,215,0,.15);color:var(--gold)}
+.axis.center{border-color:var(--green);background:rgba(57,255,136,.08);color:var(--green)}
+.axis small{font-size:6px;opacity:.6}
+
+.vital-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px}
+.vital-item{border:1px solid var(--border);border-radius:4px;padding:4px;background:rgba(0,0,0,.3)}
+.vital-item .k{font-size:7px;color:var(--dim);letter-spacing:.1em}
+.vital-item .v{font-size:11px;font-weight:700;color:var(--gold);margin-top:1px}
+
+.axiom-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:3px}
+.axiom-card{aspect-ratio:1;border:1px solid var(--ax);border-radius:4px;background:rgba(0,0,0,.4);color:var(--ax);font-size:7px;font-weight:700;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2px;text-align:center;gap:1px}
+.axiom-card.sealed{background:var(--ax);color:#000;box-shadow:0 0 8px var(--ax)}
+.axiom-card small{font-size:6px;opacity:.6}
+
+.prism{display:flex;height:20px;gap:1px;margin:4px 0}
+.prism-bar{flex:1;border-radius:2px;opacity:.4}
+.prism-bar.on{opacity:1;box-shadow:0 0 8px currentColor}
+
+.pyr{display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 0}
+.pyr-svg{width:100%;height:100px}
+
+.bus{display:grid;grid-template-columns:1fr 30px 1fr;gap:4px;align-items:center;padding:6px 0}
+.bus-cpu,.bus-cocpu{border:1px solid;border-radius:4px;padding:6px;text-align:center;font-size:8px;font-weight:700}
+.bus-cpu{border-color:var(--cyan);color:var(--cyan);background:rgba(0,204,255,.08)}
+.bus-cocpu{border-color:var(--violet);color:var(--violet);background:rgba(168,85,247,.08)}
+.bus-arrow{font-size:12px;color:var(--c);text-align:center}
+.bus-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:3px;margin-top:4px;font-size:7px}
+.bus-stat{border:1px solid var(--border);border-radius:3px;padding:3px;text-align:center}
+.bus-stat.on{border-color:var(--green);color:var(--green);background:rgba(57,255,136,.1)}
+
+.tri{display:flex;flex-direction:column;gap:4px}
+.tri-slider{display:grid;grid-template-columns:60px 1fr 40px;gap:4px;align-items:center;font-size:8px}
+.tri-slider b{color:var(--gold);font-size:9px;text-align:right}
+input[type=range]{width:100%;height:4px;accent-color:var(--c)}
+
+.station-grid{display:grid;grid-template-columns:repeat(9,1fr);gap:2px;margin:4px 0}
+.station{aspect-ratio:1;border:1px solid var(--border);border-radius:2px;background:rgba(0,0,0,.4);font-size:6px;display:grid;place-items:center;color:var(--dim);cursor:pointer}
+.station.on{background:var(--sc);color:#000;border-color:var(--sc);box-shadow:0 0 4px var(--sc)}
+
+.term-box{background:#000;border:1px solid var(--border);border-radius:4px;padding:6px;font-size:9px;line-height:1.4;max-height:200px;overflow-y:auto;white-space:pre-wrap;color:var(--green)}
+.term-in{display:flex;gap:4px;margin-top:4px}
+.term-in input{flex:1;background:rgba(0,0,0,.5);border:1px solid var(--border);color:var(--text);padding:3px 6px;font-size:9px;border-radius:3px}
+.term-in button{background:var(--c);color:#000;border:none;border-radius:3px;padding:3px 8px;font-size:9px;font-weight:700}
+
+.magma-canvas,.player-canvas,.paint-canvas{width:100%;background:#05080c;border:1px solid var(--border);border-radius:4px;display:block}
+.magma-canvas{height:120px}
+.player-canvas{height:60px}
+.paint-canvas{height:140px;cursor:crosshair;touch-action:none}
+.player-sel{width:100%;background:rgba(0,0,0,.5);color:var(--text);border:1px solid var(--border);padding:4px;font-size:9px;border-radius:3px}
+
+.todo-list{display:flex;flex-direction:column;gap:2px;max-height:200px;overflow-y:auto}
+.todo-item{display:flex;gap:4px;align-items:center;font-size:9px;padding:2px 4px;border:1px solid var(--border);border-radius:3px}
+.todo-item.done{opacity:.4;text-decoration:line-through}
+.todo-item b{font-size:7px;color:var(--c)}
+.todo-item span{flex:1}
+.todo-item input[type=checkbox]{accent-color:var(--c)}
+
+.kal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:1px}
+.kal-day{aspect-ratio:1;border:1px solid var(--border);border-radius:2px;font-size:8px;display:grid;place-items:center;background:rgba(0,0,0,.3)}
+.kal-day.today{border-color:var(--c);color:var(--c)}
+
+/* SEAL OVERLAY */
+#seal-overlay{position:fixed;inset:0;background:rgba(255,255,255,0);pointer-events:none;z-index:2000;opacity:0;transition:opacity .3s}
+#seal-overlay.active{opacity:1;background:rgba(255,255,255,.15);animation:flash 1s ease-in-out}
+@keyframes flash{50%{background:rgba(255,255,255,.35)}}
+
+/* MOBILE */
+@media(max-width:700px){
+  #header{position:static;flex-wrap:wrap}
+  #weg{position:static}
+  #axioms{position:static}
+  #dock{position:static}
+  #desk{min-height:auto;padding:8px;display:flex;flex-direction:column;gap:8px}
+  .win{position:relative !important;width:100% !important;height:auto !important;left:auto !important;top:auto !important;max-height:none !important;min-width:0 !important;margin:0}
+  .win-body{max-height:280px}
+  #bio-pulse{position:static;height:40px;margin-bottom:8px}
+}
+</style>
+</head>
+<body>
+
+<header id="header">
+  <div class="logo">) (</div>
+  <div class="title">EIN OS v3 · <span style="color:var(--c)">BIO.TEL</span> PRISMATIC<small>5 WEG · 8 AXIOME · 2268 → 4TEL 567</small></div>
+  <div class="vital" style="color:var(--c)">
+    <span class="dot"></span><span>ATEM</span>
+    <b id="atem-phase">HALTEN</b>
+    <div class="atem-bar"><div class="atem-fill" id="atem-fill" style="width: 37.5%;"></div></div>
+    <span id="atem-count" style="font-size:8px;opacity:.6">6/16</span>
+  </div>
+  <div class="vital" style="color:var(--red)"><span class="dot"></span><span>CO₂</span><b id="v-co2">415</b><span style="font-size:8px;opacity:.6">ppm</span></div>
+  <div class="vital" style="color:var(--cyan)"><span class="dot"></span><span>MEER</span><b id="v-sea">-57.6</b><span style="font-size:8px;opacity:.6">m</span></div>
+  <div class="vital" style="color:var(--green)"><span class="dot"></span><span>O₂</span><b id="v-o2">20.93</b><span style="font-size:8px;opacity:.6">%</span></div>
+  <div class="vital" style="color:var(--gold)"><span class="dot"></span><span>Σ</span><b id="v-sum" style="color: var(--smaragd);">2268</b><span style="font-size:8px;opacity:.6">/2268</span></div>
+  <div class="vital" style="color:var(--smaragd)"><span class="dot"></span><span>4TEL</span><b id="v-4tel">567</b></div>
+  <button class="hb-btn" id="hb-btn">H↔B · B 1×</button>
+  <button class="hb-btn" id="log-btn" style="background:rgba(0,0,0,.5)">▤ TEL</button>
+</header>
+
+<nav id="weg"><button class="weg-btn active" data-weg="os" style="--wc:#39ff88"><span>01 · OS · KANSAS</span><small>Dorothy · BIOS</small></button><button class="weg-btn" data-weg="nc" style="--wc:#ffd700"><span>02 · NC · NEURAL</span><small>Scarecrow · brain.eye</small></button><button class="weg-btn" data-weg="sc" style="--wc:#00ccff"><span>03 · SC · CORE</span><small>Tin Man · eye.brain</small></button><button class="weg-btn" data-weg="for" style="--wc:#ff7a18"><span>04 · FOR ALL · LION</span><small>Lion · vulkan</small></button><button class="weg-btn" data-weg="oz" style="--wc:#ffffff"><span>05 · OZ · WIZARD</span><small>Wizard · bio.tel REAL</small></button></nav>
+<nav id="axioms"><button class="axiom-btn" data-ax="weg" style="--ax:#ff0055">WEG<small>α · open</small></button><button class="axiom-btn" data-ax="ausweg" style="--ax:#ff7a00">AUSWEG<small>α · open</small></button><button class="axiom-btn" data-ax="einweg" style="--ax:#ffd700">EINWEG<small>α · open</small></button><button class="axiom-btn" data-ax="cpu" style="--ax:#00ccff">CPU<small>β · open</small></button><button class="axiom-btn" data-ax="cocpu" style="--ax:#00ffaa">Co-CPU<small>β · open</small></button><button class="axiom-btn" data-ax="bus" style="--ax:#a855f7">BUS<small>β · open</small></button><button class="axiom-btn" data-ax="prisma" style="--ax:#ffffff">PRISMA<small>γ · open</small></button><button class="axiom-btn" data-ax="pyra" style="--ax:#ffcc33">PYRA<small>γ · open</small></button></nav>
+
+<main id="desk"><div id="bio-pulse"><canvas id="pulse-canvas" width="2124" height="60"></canvas></div><div class="win" style="left:20px;top:20px;z-index:10;width:340px;height:340px" data-win="VECTOR"><div class="win-head"><span>⌖ VECTOR · bio</span><div class="actions"><button data-act="min" data-id="VECTOR">—</button><button data-act="close" data-id="VECTOR">×</button></div></div><div class="win-body"><div style="font-size:8px;opacity:.6;margin-bottom:4px">NC · 4 Achsen · M5 STABIL</div><div class="axes"><button class="axis">AH<small>0.2·0.8</small></button><button class="axis">Q1<small>0.2·0.8</small></button><button class="axis">HA<small>0.2·0.8</small></button><button class="axis">Q4<small>0.2·0.8</small></button><button class="axis center">NC<small>1·1</small></button><button class="axis">Q2<small>0.2·0.8</small></button><button class="axis">ÄH<small>0.2·0.8</small></button><button class="axis">Q3<small>0.2·0.8</small></button><button class="axis">HÄ<small>0.2·0.8</small></button></div><div class="vital-grid" style="margin-top:6px"><div class="vital-item"><div class="k">M5</div><div class="v">0.618</div></div><div class="vital-item"><div class="k">Grad</div><div class="v">7.72</div></div><div class="vital-item"><div class="k">Dom</div><div class="v">0.21</div></div><div class="vital-item"><div class="k">Lage</div><div class="v">62/-15</div></div></div><div class="prism" style="margin-top:6px"><div class="prism-bar" style="background:#ff0055;color:#ff0055"></div><div class="prism-bar" style="background:#ff7a00;color:#ff7a00"></div><div class="prism-bar" style="background:#ffd700;color:#ffd700"></div><div class="prism-bar" style="background:#00ccff;color:#00ccff"></div><div class="prism-bar" style="background:#00ffaa;color:#00ffaa"></div><div class="prism-bar" style="background:#a855f7;color:#a855f7"></div><div class="prism-bar" style="background:#ffffff;color:#ffffff"></div><div class="prism-bar" style="background:#ffcc33;color:#ffcc33"></div></div></div></div><div class="win" style="left:60px;top:20px;z-index:11;width:340px;height:340px" data-win="PRISMATIC"><div class="win-head"><span>◈ PRISMATIC · 8 Ax</span><div class="actions"><button data-act="min" data-id="PRISMATIC">—</button><button data-act="close" data-id="PRISMATIC">×</button></div></div><div class="win-body"><div style="font-size:9px;margin-bottom:6px">8 Axiome · αβγ · 2268</div><div class="axiom-grid"><button class="axiom-card" data-ax="weg" style="--ax:#ff0055">WEG<small>α</small></button><button class="axiom-card" data-ax="ausweg" style="--ax:#ff7a00">AUSWEG<small>α</small></button><button class="axiom-card" data-ax="einweg" style="--ax:#ffd700">EINWEG<small>α</small></button><button class="axiom-card" data-ax="cpu" style="--ax:#00ccff">CPU<small>β</small></button><button class="axiom-card" data-ax="cocpu" style="--ax:#00ffaa">Co-CPU<small>β</small></button><button class="axiom-card" data-ax="bus" style="--ax:#a855f7">BUS<small>β</small></button><button class="axiom-card" data-ax="prisma" style="--ax:#ffffff">PRISMA<small>γ</small></button><button class="axiom-card" data-ax="pyra" style="--ax:#ffcc33">PYRA<small>γ</small></button></div><div style="margin-top:6px;padding:4px;border:1px solid var(--border);border-radius:3px;background:rgba(0,0,0,.3);font-size:8px"><div style="opacity:.6">SUMME</div><div style="color:var(--smaragd);font-size:14px;font-weight:700">2268 / 2268</div><div style="color:var(--smaragd)">4TEL = 567</div></div></div></div><div class="win" style="left:20px;top:50px;z-index:14;width:340px;height:320px" data-win="3TEL"><div class="win-head"><span>∑ 3TEL · αβγ → 2268</span><div class="actions"><button data-act="min" data-id="3TEL">—</button><button data-act="close" data-id="3TEL">×</button></div></div><div class="win-body"><div style="font-size:8px;opacity:.6;margin-bottom:4px">3TEL · α q702 / β u1030 / γ PQ</div><div class="tri"><div class="tri-slider"><span style="color:var(--orange)">q702 (α)</span><input type="range" min="0" max="900" value="702" data-tri="triAlpha"><b>702</b></div><div class="tri-slider"><span style="color:var(--cyan)">u1030 (β)</span><input type="range" min="0" max="1200" value="1030" data-tri="triBeta"><b>1030</b></div><div class="tri-slider"><span style="color:var(--gold)">PQ (γ)</span><input type="range" min="0" max="800" value="536" data-tri="triGamma"><b>536</b></div></div><div style="margin-top:8px;padding:6px;border:1px solid var(--border);border-radius:4px;background:rgba(0,0,0,.3);text-align:center"><div style="font-size:8px;opacity:.6">SUMME</div><div style="font-size:16px;font-weight:700;color:var(--smaragd)">2268 / 2268</div><div style="font-size:9px;color:var(--smaragd)">4TEL = 567</div></div><div style="font-size:7px;opacity:.5;margin-top:6px">2268 = 3 × 756 · 2268 / 4 = 567</div></div></div></main>
+
+<div id="dock"><button class="dock-btn open" data-dock="VECTOR">⌖ VECTOR</button><button class="dock-btn open" data-dock="PRISMATIC">◈ PRISMATIC</button><button class="dock-btn" data-dock="PYRAMIDE">▲ PYRAMIDE</button><button class="dock-btn" data-dock="CPUCO">⚙ CPUCO</button><button class="dock-btn open" data-dock="3TEL">∑ 3TEL</button><button class="dock-btn" data-dock="ENERGIE">⚡ ENERGIE</button><button class="dock-btn" data-dock="MAGMA">◎ MAGMA</button><button class="dock-btn" data-dock="PLAYER">▶ PLAYER</button><button class="dock-btn" data-dock="9x9">⊞ 9x9</button><button class="dock-btn" data-dock="TERMINAL">▤ TERMINAL</button><button class="dock-btn" data-dock="TODO">≡ TODO</button><button class="dock-btn" data-dock="KALENDER">▦ KALENDER</button><button class="dock-btn" data-dock="PAINT">✦ PAINT</button><div class="dock-spacer"></div><div class="dock-info">v3 · BIO.TEL · Σ 2268 · 4TEL 567</div></div>
+
+<div id="tel-log"><div class="tel-inner" id="tel-inner"><div class="tel-line"><span class="ts">14:10:17</span><span class="from">[ATEM]</span><span class="msg">HALTEN · 4/16s</span></div><div class="tel-line"><span class="ts">14:10:13</span><span class="from">[ATEM]</span><span class="msg">EIN · 0/16s</span></div><div class="tel-line"><span class="ts">14:10:09</span><span class="from">[ATEM]</span><span class="msg">HALTEN_2 · 12/16s</span></div><div class="tel-line"><span class="ts">14:10:05</span><span class="from">[ATEM]</span><span class="msg">AUS · 8/16s</span></div><div class="tel-line"><span class="ts">14:10:01</span><span class="from">[ATEM]</span><span class="msg">HALTEN · 4/16s</span></div><div class="tel-line"><span class="ts">14:09:57</span><span class="from">[ATEM]</span><span class="msg">EIN · 0/16s</span></div><div class="tel-line"><span class="ts">14:09:53</span><span class="from">[ATEM]</span><span class="msg">HALTEN_2 · 12/16s</span></div><div class="tel-line"><span class="ts">14:09:50</span><span class="from">[COCPU]</span><span class="msg">unsealed</span></div><div class="tel-line"><span class="ts">14:09:49</span><span class="from">[COCPU]</span><span class="msg">sealed</span></div><div class="tel-line"><span class="ts">14:09:49</span><span class="from">[ATEM]</span><span class="msg">AUS · 8/16s</span></div><div class="tel-line"><span class="ts">14:09:45</span><span class="from">[ATEM]</span><span class="msg">HALTEN · 4/16s</span></div><div class="tel-line"><span class="ts">14:09:41</span><span class="from">[ATEM]</span><span class="msg">EIN · 0/16s</span></div><div class="tel-line"><span class="ts">09:12:11</span><span class="from">[ATEM]</span><span class="msg">HALTEN_2 · 12/16s</span></div><div class="tel-line"><span class="ts">09:12:07</span><span class="from">[ATEM]</span><span class="msg">AUS · 8/16s</span></div><div class="tel-line"><span class="ts">09:12:03</span><span class="from">[ATEM]</span><span class="msg">HALTEN · 4/16s</span></div><div class="tel-line"><span class="ts">09:11:59</span><span class="from">[ATEM]</span><span class="msg">EIN · 0/16s</span></div><div class="tel-line"><span class="ts">09:11:55</span><span class="from">[ATEM]</span><span class="msg">HALTEN_2 · 12/16s</span></div><div class="tel-line"><span class="ts">09:11:51</span><span class="from">[ATEM]</span><span class="msg">AUS · 8/16s</span></div><div class="tel-line"><span class="ts">09:11:47</span><span class="from">[ATEM]</span><span class="msg">HALTEN · 4/16s</span></div><div class="tel-line"><span class="ts">08:46:14</span><span class="from">[OS]</span><span class="msg">Σ 2268 → 4TEL 567</span></div><div class="tel-line"><span class="ts">08:46:14</span><span class="from">[OS]</span><span class="msg">5 WEG · 8 AXIOME · 13 ORGANE · ATEM 16s</span></div><div class="tel-line"><span class="ts">08:46:14</span><span class="from">[OS]</span><span class="msg">BOOT · EIN OS v3 · BIO.TEL PRISMATIC</span></div></div></div>
+
+<div id="seal-overlay"></div>
+
+<script>
+/* ═══════════════════════════════════════════════════════
+   EIN OS v3 · BIO.TEL PRISMATIC · sauber
+   ═══════════════════════════════════════════════════════ */
+
+const WEG = [
+  {id:'os',  num:'01', title:'OS · KANSAS',    sub:'Dorothy · BIOS',        color:'#39ff88', char:'2me',     want:'nach OZ'},
+  {id:'nc',  num:'02', title:'NC · NEURAL',    sub:'Scarecrow · brain.eye', color:'#ffd700', char:'Phi',     want:'Gehirn'},
+  {id:'sc',  num:'03', title:'SC · CORE',      sub:'Tin Man · eye.brain',   color:'#00ccff', char:'heart',   want:'Herz'},
+  {id:'for', num:'04', title:'FOR ALL · LION', sub:'Lion · vulkan',         color:'#ff7a18', char:'sync',    want:'Mut'},
+  {id:'oz',  num:'05', title:'OZ · WIZARD',    sub:'Wizard · bio.tel REAL', color:'#ffffff', char:'bio.tel', want:'ist da'}
+];
+
+const AXIOMS = [
+  {id:'weg',    name:'WEG',    color:'#ff0055', group:'α'},
+  {id:'ausweg', name:'AUSWEG', color:'#ff7a00', group:'α'},
+  {id:'einweg', name:'EINWEG', color:'#ffd700', group:'α'},
+  {id:'cpu',    name:'CPU',    color:'#00ccff', group:'β'},
+  {id:'cocpu',  name:'Co-CPU', color:'#00ffaa', group:'β'},
+  {id:'bus',    name:'BUS',    color:'#a855f7', group:'β'},
+  {id:'prisma', name:'PRISMA', color:'#ffffff', group:'γ'},
+  {id:'pyra',   name:'PYRA',   color:'#ffcc33', group:'γ'}
+];
+
+const ORGANS = [
+  {id:'VECTOR',    title:'VECTOR · bio',       icon:'⌖', w:340, h:340, weg:'os'},
+  {id:'PRISMATIC', title:'PRISMATIC · 8 Ax',   icon:'◈', w:340, h:340, weg:'nc'},
+  {id:'PYRAMIDE',  title:'PYRAMIDE · Atom',    icon:'▲', w:340, h:300, weg:'nc'},
+  {id:'CPUCO',     title:'CPU ↔ Co-CPU',       icon:'⚙', w:340, h:260, weg:'sc'},
+  {id:'3TEL',      title:'3TEL · αβγ → 2268',  icon:'∑', w:340, h:320, weg:'sc'},
+  {id:'ENERGIE',   title:'ENERGIE · Burst',    icon:'⚡', w:300, h:240, weg:'sc'},
+  {id:'MAGMA',     title:'MAGMA · Vulkan',     icon:'◎', w:340, h:260, weg:'for'},
+  {id:'PLAYER',    title:'PLAYER · 8 Beats',   icon:'▶', w:320, h:260, weg:'for'},
+  {id:'9x9',       title:'9×9 · 81 Stationen', icon:'⊞', w:340, h:360, weg:'os'},
+  {id:'TERMINAL',  title:'TERMINAL · bio.tel', icon:'▤', w:360, h:300, weg:'oz'},
+  {id:'TODO',      title:'TODO · Log',         icon:'≡', w:300, h:300, weg:'oz'},
+  {id:'KALENDER',  title:'KALENDER · QI',      icon:'▦', w:280, h:300, weg:'oz'},
+  {id:'PAINT',     title:'PAINT · 8 Colors',   icon:'✦', w:340, h:300, weg:'for'}
+];
+
+/* STATE */
+const S = {
+  atem: 0,
+  atemPhase: 'EIN',
+  co2: 415,
+  activeWeg: 'os',
+  axioms: {},
+  hb: false,
+  windows: {},
+  tel: [],
+  zCounter: 100,
+  triAlpha: 702,
+  triBeta: 1030,
+  triGamma: 536,
+  sum: 2268,
+  paintColor: '#00ccff'
+};
+
+/* RAF MANAGER — verhindert doppelte Animationen */
+const Anim = {
+  ids: {},
+  start(name, fn) {
+    this.stop(name);
+    const loop = () => {
+      if (!document.getElementById(name + '-canvas') && name !== 'pulse') {
+        // canvas nicht mehr im DOM → stop
+        this.stop(name);
+        return;
+      }
+      this.ids[name] = requestAnimationFrame(loop);
+      try { fn(); } catch(e){ this.stop(name); }
+    };
+    this.ids[name] = requestAnimationFrame(loop);
+  },
+  stop(name) {
+    if (this.ids[name]) { cancelAnimationFrame(this.ids[name]); this.ids[name] = null; }
+  },
+  stopAll() { Object.keys(this.ids).forEach(k => this.stop(k)); }
+};
+
+const $ = id => document.getElementById(id);
+const now = () => new Date().toTimeString().slice(0,8);
+const fmt = (n,d=1) => (+n).toFixed(d);
+const getSea = () => -60 + (S.co2 - 400) / 400 * 65;
+const getO2  = () => 20.95 - (S.co2 - 400) / 400 * 0.65;
+const fourTel = () => Math.round(S.sum / 4);
+const sealedCount = () => Object.values(S.axioms).filter(Boolean).length;
+
+/* TEL */
+function tel(from, msg) {
+  S.tel.unshift({ts: now(), from, msg});
+  if (S.tel.length > 100) S.tel.length = 100;
+  renderTel();
+}
+function renderTel() {
+  const box = $('tel-inner');
+  if (!box) return;
+  box.innerHTML = S.tel.slice(0, 40).map(t =>
+    '<div class="tel-line"><span class="ts">' + t.ts + '</span>' +
+    '<span class="from">[' + t.from + ']</span>' +
+    '<span class="msg">' + t.msg + '</span></div>'
+  ).join('') || '<div style="color:var(--dim);padding:20px;text-align:center">bio.tel · keine Signale</div>';
+}
+
+/* INIT */
+function initState() {
+  AXIOMS.forEach(a => S.axioms[a.id] = false);
+  ORGANS.forEach((o, i) => {
+    S.windows[o.id] = {
+      open: ['VECTOR','PRISMATIC','3TEL'].includes(o.id),
+      x: 20 + (i % 4) * 40,
+      y: 20 + Math.floor(i / 4) * 30,
+      z: 10 + i,
+      min: false
+    };
+  });
+}
+
+/* HEADER */
+function renderHeader() {
+  const weg = WEG.find(w => w.id === S.activeWeg);
+  if (weg) document.documentElement.style.setProperty('--c', weg.color);
+  $('v-co2').textContent = S.co2;
+  $('v-sea').textContent = fmt(getSea());
+  $('v-o2').textContent = fmt(getO2(), 2);
+  $('v-sum').textContent = S.sum;
+  $('v-4tel').textContent = fourTel();
+  $('v-sum').style.color = S.sum >= 2268 ? 'var(--smaragd)' : 'var(--gold)';
+}
+
+/* WEG */
+function renderWeg() {
+  $('weg').innerHTML = WEG.map(w =>
+    '<button class="weg-btn' + (w.id === S.activeWeg ? ' active' : '') + '" ' +
+    'data-weg="' + w.id + '" style="--wc:' + w.color + '">' +
+    '<span>' + w.num + ' · ' + w.title + '</span>' +
+    '<small>' + w.sub + '</small></button>'
+  ).join('');
+  document.querySelectorAll('[data-weg]').forEach(b => {
+    b.onclick = () => {
+      S.activeWeg = b.dataset.weg;
+      tel('WEG', '→ ' + b.dataset.weg.toUpperCase());
+      renderWeg(); renderHeader();
+    };
+  });
+}
+
+/* AXIOME */
+function renderAxioms() {
+  $('axioms').innerHTML = AXIOMS.map(a => {
+    const on = S.axioms[a.id];
+    return '<button class="axiom-btn' + (on ? ' sealed' : '') + '" ' +
+      'data-ax="' + a.id + '" style="--ax:' + a.color + '">' +
+      a.name + '<small>' + a.group + ' · ' + (on ? 'SEALED' : 'open') + '</small></button>';
+  }).join('');
+  document.querySelectorAll('[data-ax]').forEach(b => {
+    b.onclick = () => toggleAxiom(b.dataset.ax);
+  });
+}
+
+function toggleAxiom(id) {
+  S.axioms[id] = !S.axioms[id];
+  const a = AXIOMS.find(x => x.id === id);
+  tel(a.id.toUpperCase(), S.axioms[id] ? 'sealed' : 'unsealed');
+  if (sealedCount() === 8) triggerSeal();
+  renderAxioms(); renderHeader(); renderDesk();
+}
+
+function triggerSeal() {
+  $('seal-overlay').classList.add('active');
+  setTimeout(() => $('seal-overlay').classList.remove('active'), 1500);
+  tel('PRISMATIC', '◈ SEALED · 8 Axiome · Σ ' + S.sum + ' · 4TEL ' + fourTel());
+}
+
+/* WINDOWS */
+function renderWindow(o) {
+  const w = S.windows[o.id];
+  if (!w.open) return '';
+  if (w.min) {
+    return '<div class="win" style="left:' + w.x + 'px;top:' + w.y + 'px;z-index:' + w.z + ';width:200px" data-win="' + o.id + '">' +
+      '<div class="win-head"><span>' + o.icon + ' ' + o.title + ' · min</span>' +
+      '<div class="actions">' +
+      '<button data-act="min" data-id="' + o.id + '">□</button>' +
+      '<button data-act="close" data-id="' + o.id + '">×</button>' +
+      '</div></div></div>';
+  }
+  return '<div class="win" style="left:' + w.x + 'px;top:' + w.y + 'px;z-index:' + w.z + ';width:' + o.w + 'px;height:' + o.h + 'px" data-win="' + o.id + '">' +
+    '<div class="win-head"><span>' + o.icon + ' ' + o.title + '</span>' +
+    '<div class="actions">' +
+    '<button data-act="min" data-id="' + o.id + '">—</button>' +
+    '<button data-act="close" data-id="' + o.id + '">×</button>' +
+    '</div></div>' +
+    '<div class="win-body">' + renderOrganBody(o.id) + '</div></div>';
+}
+
+function renderOrganBody(id) {
+  switch(id) {
+    case 'VECTOR':    return bodyVector();
+    case 'PRISMATIC': return bodyPrismatic();
+    case 'PYRAMIDE':  return bodyPyramide();
+    case 'CPUCO':     return bodyCpuco();
+    case '3TEL':      return body3TEL();
+    case 'ENERGIE':   return bodyEnergie();
+    case 'MAGMA':     return bodyMagma();
+    case 'PLAYER':    return bodyPlayer();
+    case '9x9':       return body9x9();
+    case 'TERMINAL':  return bodyTerminal();
+    case 'TODO':      return bodyTodo();
+    case 'KALENDER':  return bodyKalender();
+    case 'PAINT':     return bodyPaint();
+    default:          return '—';
+  }
+}
+
+function bodyVector() {
+  const axes = ['AH','Q1','HA','Q4','NC','Q2','ÄH','Q3','HÄ'];
+  return '<div style="font-size:8px;opacity:.6;margin-bottom:4px">NC · 4 Achsen · M5 STABIL</div>' +
+    '<div class="axes">' +
+    axes.map(a => {
+      const isC = a === 'NC';
+      return '<button class="axis' + (isC ? ' center' : '') + '">' +
+        a + '<small>' + (isC ? '1·1' : '0.2·0.8') + '</small></button>';
+    }).join('') +
+    '</div>' +
+    '<div class="vital-grid" style="margin-top:6px">' +
+    '<div class="vital-item"><div class="k">M5</div><div class="v">0.618</div></div>' +
+    '<div class="vital-item"><div class="k">Grad</div><div class="v">7.72</div></div>' +
+    '<div class="vital-item"><div class="k">Dom</div><div class="v">0.21</div></div>' +
+    '<div class="vital-item"><div class="k">Lage</div><div class="v">62/-15</div></div>' +
+    '</div>' +
+    '<div class="prism" style="margin-top:6px">' +
+    AXIOMS.map(a => '<div class="prism-bar" style="background:' + a.color + ';color:' + a.color + '"></div>').join('') +
+    '</div>';
+}
+
+function bodyPrismatic() {
+  return '<div style="font-size:9px;margin-bottom:6px">8 Axiome · αβγ · 2268</div>' +
+    '<div class="axiom-grid">' +
+    AXIOMS.map(a => {
+      const on = S.axioms[a.id];
+      return '<button class="axiom-card' + (on ? ' sealed' : '') + '" ' +
+        'data-ax="' + a.id + '" style="--ax:' + a.color + '">' +
+        a.name + '<small>' + a.group + '</small></button>';
+    }).join('') +
+    '</div>' +
+    '<div style="margin-top:6px;padding:4px;border:1px solid var(--border);border-radius:3px;background:rgba(0,0,0,.3);font-size:8px">' +
+    '<div style="opacity:.6">SUMME</div>' +
+    '<div style="color:' + (S.sum >= 2268 ? 'var(--smaragd)' : 'var(--gold)') + ';font-size:14px;font-weight:700">' +
+    S.sum + ' / 2268</div>' +
+    '<div style="color:var(--smaragd)">4TEL = ' + fourTel() + '</div>' +
+    '</div>';
+}
+
+function bodyPyramide() {
+  return '<div class="pyr">' +
+    '<svg class="pyr-svg" viewBox="0 0 200 100">' +
+    '<polygon points="100,20 40,70 160,70" fill="rgba(255,204,51,.15)" stroke="#ffcc33" stroke-width="1.5"/>' +
+    '<polygon points="100,80 40,70 160,70" fill="rgba(0,204,255,.15)" stroke="#00ccff" stroke-width="1.5"/>' +
+    '<circle cx="100" cy="70" r="6" fill="#fff"/>' +
+    '<text x="100" y="65" fill="#fff" font-size="6" text-anchor="middle" font-family="monospace">ATOM</text>' +
+    '</svg></div>' +
+    '<div style="font-size:8px;text-align:center;opacity:.7;margin-top:4px">Doppel-Pyramide · 8 Ecken = 8 Axiome</div>' +
+    '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-top:6px;font-size:7px">' +
+    AXIOMS.map(a => '<div style="text-align:center;padding:2px;border:1px solid ' + a.color + ';color:' + a.color + ';border-radius:2px">' + a.name + '</div>').join('') +
+    '</div>';
+}
+
+function bodyCpuco() {
+  return '<div class="bus">' +
+    '<div class="bus-cpu">CPU<br>8086</div>' +
+    '<div class="bus-arrow">⇄</div>' +
+    '<div class="bus-cocpu">Co-CPU<br>8087</div></div>' +
+    '<div class="bus-stats">' +
+    '<div class="bus-stat on">ESC</div>' +
+    '<div class="bus-stat on">BUSY</div>' +
+    '<div class="bus-stat">READY</div>' +
+    '<div class="bus-stat">80b</div></div>' +
+    '<button style="width:100%;margin-top:8px;padding:4px;font-size:9px;font-weight:700;border:1px solid var(--c);background:rgba(0,204,255,.1);color:var(--c);border-radius:3px" id="burst-btn">BURST</button>';
+}
+
+function body3TEL() {
+  return '<div style="font-size:8px;opacity:.6;margin-bottom:4px">3TEL · α q702 / β u1030 / γ PQ</div>' +
+    '<div class="tri">' +
+    '<div class="tri-slider"><span style="color:var(--orange)">q702 (α)</span>' +
+    '<input type="range" min="0" max="900" value="' + S.triAlpha + '" data-tri="triAlpha">' +
+    '<b>' + S.triAlpha + '</b></div>' +
+    '<div class="tri-slider"><span style="color:var(--cyan)">u1030 (β)</span>' +
+    '<input type="range" min="0" max="1200" value="' + S.triBeta + '" data-tri="triBeta">' +
+    '<b>' + S.triBeta + '</b></div>' +
+    '<div class="tri-slider"><span style="color:var(--gold)">PQ (γ)</span>' +
+    '<input type="range" min="0" max="800" value="' + S.triGamma + '" data-tri="triGamma">' +
+    '<b>' + S.triGamma + '</b></div>' +
+    '</div>' +
+    '<div style="margin-top:8px;padding:6px;border:1px solid var(--border);border-radius:4px;background:rgba(0,0,0,.3);text-align:center">' +
+    '<div style="font-size:8px;opacity:.6">SUMME</div>' +
+    '<div style="font-size:16px;font-weight:700;color:' + (S.sum >= 2268 ? 'var(--smaragd)' : 'var(--gold)') + '">' +
+    S.sum + ' / 2268</div>' +
+    '<div style="font-size:9px;color:var(--smaragd)">4TEL = ' + fourTel() + '</div>' +
+    '</div>' +
+    '<div style="font-size:7px;opacity:.5;margin-top:6px">2268 = 3 × 756 · 2268 / 4 = 567</div>';
+}
+
+function bodyEnergie() {
+  return '<div style="text-align:center;padding:10px;font-size:9px">' +
+    '<div style="font-size:20px;color:var(--c);margin-bottom:4px">⚡</div>' +
+    '<div style="font-weight:700;color:var(--c)">Prism Feed</div>' +
+    '<div style="font-size:8px;opacity:.6;margin-top:4px">CPU burst → Prism feed</div></div>' +
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:4px">' +
+    '<div class="vital-item"><div class="k">BURST</div><div class="v">80/80</div></div>' +
+    '<div class="vital-item"><div class="k">ENERGIE</div><div class="v">100%</div></div>' +
+    '<div class="vital-item"><div class="k">PRISM</div><div class="v" style="color:var(--smaragd)">FEED</div></div>' +
+    '<div class="vital-item"><div class="k">ATEM</div><div class="v">16s</div></div>' +
+    '</div>';
+}
+
+function bodyMagma() {
+  return '<canvas class="magma-canvas" id="magma-canvas"></canvas>' +
+    '<div style="font-size:8px;opacity:.6;margin-top:4px">MAGMA · 8 Axiom Farben · H↔B 1.5×</div>' +
+    '<div style="display:flex;gap:2px;margin-top:4px">' +
+    AXIOMS.map(a => '<div style="flex:1;height:4px;background:' + a.color + ';border-radius:2px;opacity:.7"></div>').join('') +
+    '</div>';
+}
+
+function bodyPlayer() {
+  return '<select class="player-sel" id="player-sel">' +
+    '<option>OST pentatonic · 80bpm</option>' +
+    '<option>WEST minor epic · 100bpm</option>' +
+    '<option>PAULI punk · 140bpm</option>' +
+    '<option>SIEGFRIED battle · 120bpm</option>' +
+    '<option>VULKAN drone · 62bpm</option>' +
+    '<option>ACHSE techno · 128bpm</option>' +
+    '<option>PRISMATIC white · 96bpm</option>' +
+    '<option>PYRAMIDE gold · 72bpm</option>' +
+    '</select>' +
+    '<canvas class="player-canvas" id="player-canvas"></canvas>' +
+    '<div style="display:flex;gap:2px;margin-top:4px">' +
+    '<button style="flex:1;padding:3px;font-size:8px;border:1px solid var(--c);background:transparent;color:var(--c);border-radius:3px" id="play-btn">▶ PLAY</button>' +
+    '<button style="flex:1;padding:3px;font-size:8px;border:1px solid var(--border);background:transparent;color:var(--dim);border-radius:3px" id="stop-btn">■ STOP</button>' +
+    '</div>';
+}
+
+function body9x9() {
+  return '<div style="font-size:8px;opacity:.6;margin-bottom:4px">81 Stationen · 8 × 10 + 1</div>' +
+    '<div class="station-grid">' +
+    Array.from({length:81}, (_,i) => {
+      const on = i % 8 === 0 || i === 40;
+      const c = AXIOMS[i % AXIOMS.length].color;
+      return '<div class="station' + (on ? ' on' : '') + '" style="--sc:' + c + '" data-station="' + i + '">' + (i === 40 ? '♔' : i+1) + '</div>';
+    }).join('') +
+    '</div>';
+}
+
+function bodyTerminal() {
+  return '<div class="term-box" id="term-box">EIN OS v3 · BIO.TEL PRISMATIC\n5 WEG · 8 AXIOME · 2268 → 4TEL ' + fourTel() + '\ntype help\n\n❯ </div>' +
+    '<div class="term-in">' +
+    '<input id="term-in" placeholder="bio · 2268 · seal · help…" onkeydown="if(event.key===\'Enter\')termRun()">' +
+    '<button onclick="termRun()">RUN</button>' +
+    '</div>';
+}
+
+function termRun() {
+  const inp = $('term-in');
+  const box = $('term-box');
+  if (!inp || !box) return;
+  const cmd = inp.value.trim().toLowerCase();
+  if (!cmd) return;
+  let out = '❯ ' + cmd + '\n';
+  if (cmd === 'help') out += 'bio · vector · prism · 2268 · seal · atem · weg · clear\n';
+  else if (cmd === 'bio') out += 'bio.tel REAL — b.i.o → bio → bios → uefi → OPEN.md → bio.tel\n';
+  else if (cmd === 'vector') out += 'VECTOR = 81 Stationen · 8 × 10 + 1\n';
+  else if (cmd === 'prism') out += 'PRISMATIC = 8 Axiome · α(3) β(3) γ(2)\n';
+  else if (cmd === '2268') out += '2268 = 3 × 756 · 4TEL = ' + fourTel() + '\n';
+  else if (cmd === 'seal') {
+    AXIOMS.forEach(a => S.axioms[a.id] = true);
+    S.sum = 2268;
+    triggerSeal();
+    renderAxioms(); renderHeader(); renderDesk();
+    out += 'SEALED · 8 Axiome · 2268 · 4TEL ' + fourTel() + '\n';
+  }
+  else if (cmd === 'atem') out += 'ATEM 16s · EIN/HALTEN/AUS/HALTEN_2 · phase ' + S.atemPhase + '\n';
+  else if (cmd === 'weg') out += '5 WEG · active ' + S.activeWeg.toUpperCase() + '\n';
+  else if (cmd === 'clear') { box.textContent = '❯ '; inp.value = ''; return; }
+  else out += 'unbekannt: ' + cmd + '\n';
+  box.textContent += out + '\n❯ ';
+  box.scrollTop = box.scrollHeight;
+  inp.value = '';
+  tel('TERMINAL', cmd);
+}
+
+function bodyTodo() {
+  return '<div style="display:flex;gap:2px;margin-bottom:4px">' +
+    '<input id="todo-in" placeholder="+ Aufgabe…" style="flex:1;padding:3px;font-size:8px;background:rgba(0,0,0,.5);border:1px solid var(--border);color:var(--text);border-radius:3px" onkeydown="if(event.key===\'Enter\')todoAdd()">' +
+    '<button onclick="todoAdd()" style="padding:3px 6px;font-size:8px;background:var(--c);color:#000;border:none;border-radius:3px;font-weight:700">+</button>' +
+    '</div>' +
+    '<div class="todo-list" id="todo-list">' +
+    ['5 WEG prüfen','8 Axiome siegeln','ATEM stabil','2268 → 4TEL 567','bio.tel REAL','PRISMATIC seal']
+      .map((t,i) => '<div class="todo-item' + (i === 3 ? ' done' : '') + '"><input type="checkbox"' + (i === 3 ? ' checked' : '') + '><b>WEG</b><span>' + t + '</span></div>').join('') +
+    '</div>';
+}
+
+function todoAdd() {
+  const inp = $('todo-in');
+  const list = $('todo-list');
+  if (!inp || !list || !inp.value.trim()) return;
+  const item = document.createElement('div');
+  item.className = 'todo-item';
+  item.innerHTML = '<input type="checkbox"><b>NEU</b><span></span>';
+  item.querySelector('span').textContent = inp.value;
+  list.insertBefore(item, list.firstChild);
+  tel('TODO', inp.value);
+  inp.value = '';
+}
+
+function bodyKalender() {
+  const now = new Date();
+  const day = now.getDate();
+  const month = now.toLocaleString('de-DE',{month:'long'});
+  return '<div style="display:flex;justify-content:space-between;font-size:9px;margin-bottom:4px">' +
+    '<span>‹</span><b>' + month.toUpperCase() + ' ' + now.getFullYear() + '</b><span>›</span></div>' +
+    '<div class="kal-grid">' +
+    ['MO','DI','MI','DO','FR','SA','SO'].map(d => '<div style="font-size:6px;text-align:center;opacity:.5">' + d + '</div>').join('') +
+    Array.from({length:30}, (_,i) => {
+      const d = i+1;
+      return '<div class="kal-day' + (d === day ? ' today' : '') + '">' + d + '</div>';
+    }).join('') +
+    '</div>' +
+    '<div style="font-size:8px;opacity:.6;margin-top:6px;text-align:center">QI CYCLE · Xt ' + [3,9,27,81,243,756,729][day%7] + '</div>';
+}
+
+function bodyPaint() {
+  return '<div style="display:flex;gap:2px;margin-bottom:4px">' +
+    AXIOMS.map(a => '<button style="flex:1;height:16px;background:' + a.color + ';border:none;border-radius:2px" data-paint="' + a.color + '" title="' + a.name + '"></button>').join('') +
+    '</div>' +
+    '<canvas class="paint-canvas" id="paint-canvas"></canvas>' +
+    '<div style="display:flex;gap:2px;margin-top:4px">' +
+    '<button style="flex:1;padding:2px;font-size:7px;border:1px solid var(--border);background:transparent;color:var(--dim);border-radius:2px" id="paint-clear">CLEAR</button>' +
+    '<button style="flex:1;padding:2px;font-size:7px;border:1px solid var(--border);background:transparent;color:var(--dim);border-radius:2px" id="paint-export">EXPORT</button>' +
+    '</div>';
+}
+
+/* RENDER DESK — stoppt alle RAFs vorher */
+function renderDesk() {
+  Anim.stopAll();
+  $('desk').innerHTML = '<div id="bio-pulse"><canvas id="pulse-canvas"></canvas></div>' +
+    ORGANS.map(o => renderWindow(o)).join('');
+  bindWindows();
+  bindOrganInteractions();
+  drawPulse();
+  drawMagma();
+  drawPlayer();
+  bindPaint();
+  bindButtons();
+}
+
+function bindWindows() {
+  document.querySelectorAll('.win').forEach(w => {
+    const id = w.dataset.win;
+    w.onpointerdown = e => {
+      if (e.target.tagName === 'BUTTON' || e.target.tagName === 'INPUT') return;
+      S.windows[id].z = ++S.zCounter;
+      w.style.zIndex = S.windows[id].z;
+    };
+    const head = w.querySelector('.win-head');
+    if (head) {
+      head.onpointerdown = e => {
+        if (e.target.tagName === 'BUTTON') return;
+        const sx = e.clientX, sy = e.clientY;
+        const ox = S.windows[id].x, oy = S.windows[id].y;
+        S.windows[id].z = ++S.zCounter;
+        w.style.zIndex = S.windows[id].z;
+        const move = ev => {
+          const nx = Math.max(0, Math.min(window.innerWidth - 100, ox + ev.clientX - sx));
+          const ny = Math.max(0, Math.min(window.innerHeight - 200, oy + ev.clientY - sy));
+          S.windows[id].x = nx; S.windows[id].y = ny;
+          w.style.left = nx + 'px'; w.style.top = ny + 'px';
+        };
+        const up = () => {
+          window.removeEventListener('pointermove', move);
+          window.removeEventListener('pointerup', up);
+        };
+        window.addEventListener('pointermove', move);
+        window.addEventListener('pointerup', up);
+      };
+    }
+  });
+  document.querySelectorAll('[data-act]').forEach(b => {
+    b.onclick = () => {
+      const id = b.dataset.id;
+      if (b.dataset.act === 'close') S.windows[id].open = false;
+      else if (b.dataset.act === 'min') S.windows[id].min = !S.windows[id].min;
+      renderDesk(); renderDock();
+    };
+  });
+}
+
+function bindOrganInteractions() {
+  document.querySelectorAll('.axiom-card').forEach(c => {
+    c.onclick = () => toggleAxiom(c.dataset.ax);
+  });
+  document.querySelectorAll('[data-station]').forEach(s => {
+    s.onclick = () => {
+      s.classList.toggle('on');
+      tel('9X9', 'station ' + s.dataset.station);
+    };
+  });
+  document.querySelectorAll('[data-tri]').forEach(r => {
+    r.oninput = () => {
+      S[r.dataset.tri] = parseInt(r.value, 10);
+      S.sum = Math.min(2268, S.triAlpha + S.triBeta + S.triGamma);
+      renderHeader();
+      const valEl = r.parentElement.querySelector('b');
+      if (valEl) valEl.textContent = S[r.dataset.tri];
+      const sumEl = r.parentElement.parentElement.parentElement.querySelector('[style*="font-size:16px"]');
+      if (sumEl) {
+        sumEl.textContent = S.sum + ' / 2268';
+        sumEl.style.color = S.sum >= 2268 ? 'var(--smaragd)' : 'var(--gold)';
+      }
+    };
+  });
+  document.querySelectorAll('[data-paint]').forEach(b => {
+    b.onclick = () => {
+      S.paintColor = b.dataset.paint;
+      tel('PAINT', 'color ' + S.paintColor);
+    };
+  });
+}
+
+function bindButtons() {
+  const hb = $('hb-btn');
+  if (hb) hb.onclick = () => {
+    S.hb = !S.hb;
+    hb.textContent = S.hb ? 'H↔B · H 1.8×' : 'H↔B · B 1×';
+    hb.classList.toggle('on', S.hb);
+    tel('HB', S.hb ? 'H 1.8×' : 'B 1×');
+  };
+  const log = $('log-btn');
+  if (log) log.onclick = () => $('tel-log').classList.toggle('open');
+  const burst = $('burst-btn');
+  if (burst) burst.onclick = () => tel('CPUCO', 'burst · 80-bit');
+  const play = $('play-btn');
+  if (play) play.onclick = () => tel('PLAYER', '▶ play');
+  const stop = $('stop-btn');
+  if (stop) stop.onclick = () => tel('PLAYER', '■ stop');
+  const pc = $('paint-clear');
+  if (pc) pc.onclick = paintClear;
+  const pe = $('paint-export');
+  if (pe) pe.onclick = paintExport;
+}
+
+/* DOCK */
+function renderDock() {
+  $('dock').innerHTML = ORGANS.map(o =>
+    '<button class="dock-btn' + (S.windows[o.id].open ? ' open' : '') + '" data-dock="' + o.id + '">' +
+    o.icon + ' ' + o.id + '</button>'
+  ).join('') +
+    '<div class="dock-spacer"></div>' +
+    '<div class="dock-info">v3 · BIO.TEL · Σ ' + S.sum + ' · 4TEL ' + fourTel() + '</div>';
+  document.querySelectorAll('[data-dock]').forEach(b => {
+    b.onclick = () => {
+      const id = b.dataset.dock;
+      S.windows[id].open = !S.windows[id].open;
+      S.windows[id].min = false;
+      S.windows[id].z = ++S.zCounter;
+      tel(id, S.windows[id].open ? 'geöffnet' : 'geschlossen');
+      renderDesk(); renderDock();
+    };
+  });
+}
+
+/* CANVAS: PULSE */
+function drawPulse() {
+  const cv = $('pulse-canvas');
+  if (!cv) return;
+  const parent = cv.parentElement;
+  if (!parent) return;
+  const rect = parent.getBoundingClientRect();
+  cv.width = Math.max(rect.width || 300, 100);
+  cv.height = 60;
+  const ctx = cv.getContext('2d');
+  let t = 0;
+  Anim.start('pulse', () => {
+    ctx.clearRect(0, 0, cv.width, cv.height);
+    ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--c').trim() || '#00ccff';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    const ap = Math.sin((S.atem / 16) * Math.PI * 2);
+    for (let x = 0; x < cv.width; x += 3) {
+      const y = cv.height / 2 + Math.sin(x * 0.02 + t * 0.05) * 8 * (1 + ap * 0.5);
+      if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+    t++;
+  });
+}
+
+/* CANVAS: MAGMA */
+function drawMagma() {
+  const cv = $('magma-canvas');
+  if (!cv) return;
+  cv.width = Math.max(cv.clientWidth || 300, 100);
+  cv.height = 120;
+  const ctx = cv.getContext('2d');
+  const blobs = AXIOMS.map(a => ({
+    x: Math.random() * cv.width,
+    y: Math.random() * cv.height,
+    r: 15 + Math.random() * 20,
+    vx: (Math.random() - 0.5) * 0.6,
+    vy: (Math.random() - 0.5) * 0.6,
+    color: a.color
+  }));
+  Anim.start('magma', () => {
+    ctx.fillStyle = 'rgba(5,8,12,0.2)';
+    ctx.fillRect(0, 0, cv.width, cv.height);
+    blobs.forEach(b => {
+      b.x += b.vx * (S.hb ? 1.5 : 1);
+      b.y += b.vy * (S.hb ? 1.5 : 1);
+      if (b.x < 0 || b.x > cv.width) b.vx *= -1;
+      if (b.y < 0 || b.y > cv.height) b.vy *= -1;
+      const g = ctx.createRadialGradient(b.x, b.y, 0, b.x, b.y, b.r);
+      g.addColorStop(0, b.color);
+      g.addColorStop(1, 'transparent');
+      ctx.fillStyle = g;
+      ctx.beginPath();
+      ctx.arc(b.x, b.y, b.r, 0, Math.PI * 2);
+      ctx.fill();
+    });
+  });
+}
+
+/* CANVAS: PLAYER */
+function drawPlayer() {
+  const cv = $('player-canvas');
+  if (!cv) return;
+  cv.width = Math.max(cv.clientWidth || 280, 100);
+  cv.height = 60;
+  const ctx = cv.getContext('2d');
+  let t = 0;
+  Anim.start('player', () => {
+    ctx.fillStyle = 'rgba(8,14,20,0.3)';
+    ctx.fillRect(0, 0, cv.width, cv.height);
+    ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--c').trim() || '#00ccff';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    for (let i = 0; i < cv.width; i += 2) {
+      const y = cv.height / 2 + Math.sin(i * 0.08 + t * 0.1) * 15 + Math.sin(i * 0.15 + t * 0.05) * 8;
+      if (i === 0) ctx.moveTo(i, y); else ctx.lineTo(i, y);
+    }
+    ctx.stroke();
+    t++;
+  });
+}
+
+/* PAINT */
+function bindPaint() {
+  const cv = $('paint-canvas');
+  if (!cv) return;
+  cv.width = Math.max(cv.clientWidth || 300, 100);
+  cv.height = 140;
+  const ctx = cv.getContext('2d');
+  ctx.fillStyle = '#0a1218';
+  ctx.fillRect(0, 0, cv.width, cv.height);
+  let down = false;
+  const draw = e => {
+    const r = cv.getBoundingClientRect();
+    const x = (e.clientX - r.left) * cv.width / r.width;
+    const y = (e.clientY - r.top) * cv.height / r.height;
+    ctx.fillStyle = S.paintColor;
+    ctx.beginPath();
+    ctx.arc(x, y, 4, 0, Math.PI * 2);
+    ctx.fill();
+  };
+  cv.onpointerdown = e => { down = true; draw(e); };
+  cv.onpointermove = e => { if (down) draw(e); };
+  cv.onpointerup = () => { down = false; };
+  cv.onpointerleave = () => { down = false; };
+}
+
+function paintClear() {
+  const cv = $('paint-canvas');
+  if (!cv) return;
+  const ctx = cv.getContext('2d');
+  ctx.fillStyle = '#0a1218';
+  ctx.fillRect(0, 0, cv.width, cv.height);
+  tel('PAINT', 'clear');
+}
+
+function paintExport() {
+  const cv = $('paint-canvas');
+  if (!cv) return;
+  const a = document.createElement('a');
+  a.href = cv.toDataURL();
+  a.download = 'bio-tel-paint.png';
+  a.click();
+  tel('PAINT', 'export png');
+}
+
+/* ATEM */
+function tickAtem() {
+  S.atem = (S.atem + 1) % 16;
+  const phase = S.atem < 4 ? 'EIN' : S.atem < 8 ? 'HALTEN' : S.atem < 12 ? 'AUS' : 'HALTEN_2';
+  if (phase !== S.atemPhase) {
+    S.atemPhase = phase;
+    tel('ATEM', phase + ' · ' + S.atem + '/16s');
+  }
+  const phEl = $('atem-phase');
+  if (phEl) phEl.textContent = phase;
+  const fillEl = $('atem-fill');
+  if (fillEl) fillEl.style.width = ((S.atem / 16) * 100) + '%';
+  const cntEl = $('atem-count');
+  if (cntEl) cntEl.textContent = S.atem + '/16';
+}
+
+/* BOOT */
+function boot() {
+  initState();
+  renderHeader(); renderWeg(); renderAxioms();
+  renderDesk(); renderDock();
+  renderTel();
+  tel('OS', 'BOOT · EIN OS v3 · BIO.TEL PRISMATIC');
+  tel('OS', '5 WEG · 8 AXIOME · 13 ORGANE · ATEM 16s');
+  tel('OS', 'Σ ' + S.sum + ' → 4TEL ' + fourTel());
+  setInterval(tickAtem, 1000);
+}
+
+boot();
+</script>
+
+
+</body></html>
